@@ -26,12 +26,17 @@ public class Test {
 		System.out.println(list);
 		
 		list.reverse();
+		System.out.println(list);
 		
-		/*
-		RecursionLinkedList list = new RecursionLinkedList();
+		list.addAll(list2);
+		System.out.println(list);
+		//-----------------------------Test Code----------------------------------//
+		
+		
+		list = new RecursionLinkedList();
 		FileReader fr;
 		try {
-			fr = new FileReader("hw01.txt");
+			fr = new FileReader("hw01.txt");//"hw01.txt");
 			BufferedReader br = new BufferedReader(fr);
 			String inputString = br.readLine();
 			for(int i = 0; i < inputString.length(); i++)
@@ -43,8 +48,5 @@ public class Test {
 		System.out.println(list.toString());
 		list.add(3, 'b'); 	System.out.println(list.toString());
 		list.reverse();		System.out.println(list.toString());
-		// 등등 구현한 기능 추가해서 사용
-		 * 
-		 */
 	}
 }

@@ -22,7 +22,8 @@ public class RecursionLinkedList
 		}
 		else
 		{
-			Node node = new Node(element, x);
+			Node node = new Node(element, null);
+			x.next = node;
 		}
 	}
 	/**
@@ -98,7 +99,7 @@ public class RecursionLinkedList
 			return String.valueOf(x.item);
 		else
 		{
-			return x.item + toString(x.next);
+			return x.item + " " + toString(x.next);
 		}
 	}
 	/**
@@ -112,6 +113,16 @@ public class RecursionLinkedList
 	 */
 	private void reverse(Node x, Node pred) {
 		// 채워서 사용
+		if(x.next == null)
+		{
+			x.next = pred;
+			head = x;
+		}
+		else
+		{
+			reverse(x.next, x);
+			x.next = pred;
+		}		
 	}
 	/**
 	 * 리스트를 거꾸로 만듬
@@ -132,7 +143,14 @@ public class RecursionLinkedList
 	 * 			list2의 head
 	 */
 	private void addAll(Node x, Node y) {
-		// 채워서 사용
+		if(x.next == null)
+		{
+			x.next = y;
+			return;
+		}else
+		{
+			addAll(x.next, y);
+		}
 	}
 	/**
 	 * 두 리스트를 합침 (this+B)
