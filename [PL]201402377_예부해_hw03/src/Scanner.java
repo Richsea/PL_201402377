@@ -36,24 +36,28 @@ public class Scanner {
 	private StringTokenizer st;
 	
 	private void initTM() {
-		//init 함수 제작 제대로 됬는지 확인 필요
+		
 		for(int i = 0; i < 128; i++)
 		{
 			if(i == 45) 
 			{
 				transM[0][45] = 1;
+				transM[3][45] = -1;
 			}
 			else if(i > 47 && i < 58)
 			{
 				transM[0][i] = 2;
+				transM[3][i] = 3;
 			}
 			else if((i > 64 && i < 91) || (i > 96 && i < 123))
 			{
 				transM[0][i] = 3;
+				transM[3][i] = 3;
 			}
 			else
 			{
 				transM[0][i] = -1;
+				transM[3][i] = -1;
 			}
 		}
 		
@@ -61,39 +65,22 @@ public class Scanner {
 		{
 			for(int j = 0; j < 128; j++)
 			{
-				if(i > 47 && i < 58)
+				if(j > 47 && j < 58)
 					transM[i][j] = 2;
 				else
 					transM[i][j] = -1;
-			}
-		}
-		
-		for(int i = 0; i < 128; i++)
-		{
-			if((i > 47 && i < 58) || (i > 64 && i < 91) || (i > 96 && i < 123))
-			{
-				transM[3][i] = 3;
-			}
-			else
-			{
-				transM[3][i] = -1;
 			}
 		}
 	}
 	private Token nextToken() {
 		int stateOld = 0, stateNew;
 		
-		//토큰이 더 있는지 검사
 		if(!st.hasMoreTokens()) return null;
 		
-		//그 다음 토큰을 받음
 		String temp = st.nextToken();
 		
 		Token result = null;
 		for(int i = 0; i < temp.length(); i++) {
-			//문자열의 문자를 하나씩 가져와 현재상태와 TransM를 이용하여 다음 상태를 판별
-			//만약 입력된 문자의 상태가 reject 이면 에러메세지 출력 후 return함
-			//새로 얻은 상태를 현재 상태로 저장
 			
 			stateNew = transM[stateOld][temp.charAt(i)];
 			
@@ -115,13 +102,16 @@ public class Scanner {
 	}
 	
 	public List<Token> tokenize(){
-		//입력으로 들어온 모든 token에 대해
-		//nextToken() 이용해 식별한 후 list에 추가해 반환
 		List<Token> list = new ArrayList<Token>();
-		list.add(this.nextToken());
+		Token newToken = this.nextToken();
+			
+		while(newToken != null)
+		{
+			list.add(newToken);
+			newToken = this.nextToken();
+		}
 		
-		
-		return ...
+		return list;
 	}
 	
 	/**
