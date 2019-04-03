@@ -16,7 +16,30 @@ public enum TokenType {
 		switch ( ch ) {
 			case '+':
 				return PLUS;
-			//ë‚˜ë¨¸ì§€ Special Charactorì— ëŒ€í•´ í† í°ì„ ë°˜í™˜í•˜ë„ë¡ ì‘ì„±
+			case '-':
+				return MINUS;
+			case '*':
+				return TIMES;
+			case '/':
+				return DIV;
+			
+			case '<':
+				return LT;
+			case '>':
+				return GT;
+			case '=':
+				return EQ;
+			case '\'':
+				return APOSTROPHE;
+				
+			case '(':
+				return L_PAREN;
+			case ')':
+				return R_PAREN;
+			case '?':
+				return QUESTION;
+				
+				//³ª¸ÓÁö Special Charactor¿¡ ´ëÇØ ÅäÅ«À» ¹İÈ¯ÇÏµµ·Ï ÀÛ¼º
 			default:
 				throw new IllegalArgumentException("unregistered char: " + ch);
 		}

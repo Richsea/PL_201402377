@@ -28,14 +28,14 @@ enum State {
 				case DIGIT:
 					context.append(v);
 					return GOTO_ACCEPT_INT;
-				case SPECIAL_CHAR: //special charactorê°€ ë“¤ì–´ì˜¨ ê²½ìš° 
-					if ( ) { //ë¶€í˜¸ì¸ê²½ìš° ìƒíƒœë°˜í™˜
+				case SPECIAL_CHAR: //special charactor°¡ µé¾î¿Â °æ¿ì 
+					if ( ) { //ºÎÈ£ÀÎ°æ¿ì »óÅÂ¹İÈ¯
 						
 					}
-					else if (  ) {  //booleanì¸ ê²½ìš° ìƒíƒœë°˜í™˜
+					else if (  ) {  //booleanÀÎ °æ¿ì »óÅÂ¹İÈ¯
 						
 					}
-					else { //ê·¸ì™¸ì—ëŠ” typeì„ ì•Œì•„ë‚´ì„œ ì•Œë§ì€ ìƒíƒœë¡œ ë°˜í™˜
+					else { //±×¿Ü¿¡´Â typeÀ» ¾Ë¾Æ³»¼­ ¾Ë¸ÂÀº »óÅÂ·Î ¹İÈ¯
 						
 					}
 				case WS:

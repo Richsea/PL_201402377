@@ -32,7 +32,7 @@ class Char {
 	
 	private static CharacterType getType(char ch) {
 		int code = (int)ch;
-		if ( ) { //letterê°€ ë˜ëŠ” ì¡°ê±´ì‹ì„ ì•Œë§žê²Œ ì±„ìš°ê¸° 
+		if (code > 64 && code < 91 || code > 96 && code < 123) { //letter°¡ µÇ´Â Á¶°Ç½ÄÀ» ¾Ë¸Â°Ô Ã¤¿ì±â 
 			return CharacterType.LETTER;
 		}
 		
