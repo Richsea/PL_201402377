@@ -29,14 +29,18 @@ enum State {
 					context.append(v);
 					return GOTO_ACCEPT_INT;
 				case SPECIAL_CHAR: //special charactor가 들어온 경우 
-					if ( ) { //부호인경우 상태반환
-						
+					if (v == '<' || v == '>' || v == '=') { //부호인경우 상태반환
+						return GOTO_SIGN;
 					}
-					else if (  ) {  //boolean인 경우 상태반환
-						
+					else if (v == '#') {  //boolean인 경우 상태반환
+						return GOTO_SHARP;
 					}
 					else { //그외에는 type을 알아내서 알맞은 상태로 반환
-						
+						return GOTO_SIGN;
+						/*
+						if(v == '+' || v == '-' || v == '*' || v == '/')
+							return GOTO_SIGN;
+						*/
 					}
 				case WS:
 					return GOTO_START;

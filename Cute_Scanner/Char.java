@@ -32,7 +32,7 @@ class Char {
 	
 	private static CharacterType getType(char ch) {
 		int code = (int)ch;
-		if (code > 64 && code < 91 || code > 96 && code < 123) { //letter가 되는 조건식을 알맞게 채우기 
+		if (code > 64 && code < 91 || code > 96 && code < 123 || code == 63) { //letter가 되는 조건식을 알맞게 채우기 
 			return CharacterType.LETTER;
 		}
 		
