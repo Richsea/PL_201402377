@@ -29,14 +29,26 @@ enum State {
 					context.append(v);
 					return GOTO_ACCEPT_INT;
 				case SPECIAL_CHAR: //special charactor가 들어온 경우 
-					if (v == '<' || v == '>' || v == '=') { //부호인경우 상태반환
+					if (v == '<' || v == '>' || v == '=' || v == '*' || v == '\'' || v == '/') { //부호인경우 상태반환
+						context.append(v);
+						return GOTO_MATCHED(TokenType.fromSpecialCharactor(v), context.getLexime());
+					}
+					else if(v == '+' || v == '-' || v == '/' || v == '*')
+					{
+						context.append(v);
 						return GOTO_SIGN;
 					}
 					else if (v == '#') {  //boolean인 경우 상태반환
+						context.append(v);
 						return GOTO_SHARP;
 					}
+					else if(v == '(' || v == ')')
+					{
+						context.append(v);
+						return GOTO_MATCHED(TokenType.fromSpecialCharactor(v), context.getLexime());
+					}
 					else { //그외에는 type을 알아내서 알맞은 상태로 반환
-						return GOTO_SIGN;
+						return GOTO_START;
 						/*
 						if(v == '+' || v == '-' || v == '*' || v == '/')
 							return GOTO_SIGN;
