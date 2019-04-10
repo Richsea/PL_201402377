@@ -9,56 +9,47 @@ public class Node_Max_Sum {
 	{
 		int max = Integer.MIN_VALUE;
 		Node start = node;
-		IntNode intNode;
-		ListNode list;
+		IntNode intNode = null;
+		ListNode listNode = null;
 		
-		Node newNode = new ListNode(start.getType(), start);
-		
-		System.out.println(start.getClass().getSimpleName());
-		
-		
-		
-		// value를 확인할 방법이 필요함
-		
-		/*
-		 * 
-		 * 
-		if(start.value.getClass() == ListNode.class)
+		if(node.getClass() == ListNode.class)
 		{
-		max = max(start.getNext());
-		}
-		else if(start.value.getClass() == IntNode.class)
-		{
+			listNode = (ListNode) node;
 			
+			if(listNode.value.getClass() != null)
+			{
+				int temp = max(listNode.value);
+				max = Math.max(temp, max);
+			}
+			
+			if(listNode.getNext() == null)
+			{
+				return max;
+			}
+			else
+			{
+				int temp = max(listNode.getNext());
+				max = Math.max(temp, max);
+			}
 		}
-		 * 
-		if(start.getNext().getClass() == ListNode.class)
+		else if(node.getClass() == IntNode.class)
 		{
-			max = max(start.getNext());
-		}
-		else if(start.getNext().getClass() == null)
-		{
-			return max;
-		}
+			intNode = (IntNode) node;
+			
+			max = intNode.value;
+			
+			if(intNode.getNext() == null)
+			{
+				return max;
+			}
+			else
+			{
+				int temp = max(intNode.getNext());
+				max = Math.max(max, temp);				
+			}
+		}		
 		
-		while(start.getNext() != null)
-		{
-			// start.getNext를 모두 돌린다.
-		}
-		
-		while(start.getNext().getClass() == ListNode.class)
-		{
-			max = max(start.getNext());
-		}
-		while(start.getClass() == ListNode.class)
-		
-		while(start.getNext() != null)
-		{
-			System.out.println(start.getType() + ", " + start.toString());
-			start = start.getNext();
-		}
-		*/
-		return 0;
+		return max;
 	}
 	
 	public static int sum(Node node)
@@ -71,7 +62,7 @@ public class Node_Max_Sum {
 		Node node = TreeFactory.createtTree("( 3 ( 5 2 3 ) -378 )");
 		//Node node = TreeFactory.createtTree("( ( 3 ( ( 10 ) ) 6 ) 4 1 ( ) -2 ( ) )");
 		
-		max(node);
+		System.out.println(max(node));
 		
 	}
 }

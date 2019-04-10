@@ -33,7 +33,7 @@ enum State {
 						context.append(v);
 						return GOTO_MATCHED(TokenType.fromSpecialCharactor(v), context.getLexime());
 					}
-					else if(v == '+' || v == '-' || v == '/' || v == '*')
+					else if(v == '+' || v == '-')
 					{
 						context.append(v);
 						return GOTO_SIGN;
@@ -49,10 +49,6 @@ enum State {
 					}
 					else { //그외에는 type을 알아내서 알맞은 상태로 반환
 						return GOTO_START;
-						/*
-						if(v == '+' || v == '-' || v == '*' || v == '/')
-							return GOTO_SIGN;
-						*/
 					}
 				case WS:
 					return GOTO_START;
