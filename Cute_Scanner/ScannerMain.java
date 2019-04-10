@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public class ScannerMain {
     public static final void main(String... args) throws Exception {
         ClassLoader cloader = ScannerMain.class.getClassLoader();
-        File file = new File(cloader.getResource("lexer/as04.txt").getFile());
+        File file = new File(cloader.getResource("C:/Users/¿¹ºÎÇØ/eclipse-workspace/Cute_Scanner/src/lexer/as04.txt").getFile());
         testTokenStream(file);
     }
 
