@@ -95,7 +95,9 @@ public class CuteParser {
 		// case L_PAREN일 경우와 case R_PAREN일 경우에 대해서 작성
 		// L_PAREN일 경우 parseExprList()를 호출하여 처리
 		case L_PAREN:
-			return parseExprList();
+			ListNode listNode = new ListNode();
+			listNode.value = parseExprList();
+			return listNode;
 			//내용 채우기
 			
 		case R_PAREN:
