@@ -1,5 +1,5 @@
 package parser;
 
-public class ListNode {
-
+public class ListNode extends Node{
+	public Node value;
 }
