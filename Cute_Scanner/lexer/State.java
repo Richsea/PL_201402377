@@ -93,8 +93,8 @@ enum State {
 					return GOTO_FAILED;
 				case WS:
 					return GOTO_MATCHED(INT, context.getLexime());
-				case END_OF_STREAM:
-					return GOTO_FAILED;
+				case END_OF_STREAM:	//이부분 수정
+					return GOTO_MATCHED(INT, context.getLexime());
 				default:
 					throw new AssertionError();
 			}
