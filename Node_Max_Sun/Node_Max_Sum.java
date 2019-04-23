@@ -81,8 +81,8 @@ public class Node_Max_Sum {
 	{
 		Node node = TreeFactory.createtTree("( ( 3 ( ( 10 ) ) 6 ) 4 1 ( ) -2 ( ) )");
 		
-		System.out.println(max(node));
-		System.out.println(sum(node));
+		System.out.println("max°ª: " + max(node));
+		System.out.println("sum°ª: " + sum(node));
 		
 	}
 }

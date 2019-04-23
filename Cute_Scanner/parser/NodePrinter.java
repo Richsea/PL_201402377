@@ -24,7 +24,7 @@ public class NodePrinter {
 		
 		sb.append("(");
 		printNode(head);
-		sb.delete(sb.length()-1, sb.length());
+		//sb.delete(sb.length()-1, sb.length());
 		sb.append(")");
 	}
 	
