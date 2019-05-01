@@ -1,11 +1,16 @@
 package parser;
 
-public class IdNode extends Node{
-	public String value;
+public class IdNode implements ValueNode{
+	String idString;
+	
+	public IdNode(String text)
+	{
+		idString= text;
+	}
 	
 	@Override
 	public String toString()
 	{
-		return "ID: " + value;
+		return "ID: " + idString;
 	}
 }

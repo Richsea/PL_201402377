@@ -10,6 +10,7 @@ import lexer.TokenType;
 
 public class CuteParser {
 	private Iterator<Token> tokens;
+	public static Node END_OF_LIST = new Node() {};
 	
 	public CuteParser(File file)
 	{
@@ -40,15 +41,12 @@ public class CuteParser {
 		switch(tType)
 		{
 		case ID:
-			IdNode idNode = new IdNode();
-			idNode.value = tLexeme;
-			return idNode;
+			return new IdNode(tLexeme);
+			
 		case INT:
-			IntNode intNode = new IntNode();
 			if(tLexeme == null)
 				System.out.println("???");
-			intNode.value = new Integer(tLexeme);
-			return intNode;
+			return new IntNode(tLexeme);
 			
 		case DIV:
 		case EQ:
@@ -62,7 +60,6 @@ public class CuteParser {
 				System.out.println("???");
 			biNode.setValue(tType);
 			return biNode;
-			// 내용 채우기
 			
 		// FunctionNode에 대하여 작성
 		// 키워드가 FunctionNode에 해당
@@ -84,39 +81,45 @@ public class CuteParser {
 			
 		//BooleanNode에 대하여 작성
 		case FALSE:
-			BooleanNode falseNode = new BooleanNode();
-			falseNode.value = false;
-			return falseNode;
+			return BooleanNode.FALSE_NODE;
 		case TRUE:
-			BooleanNode trueNode = new BooleanNode();
-			trueNode.value = true;
-			return trueNode;
+			return BooleanNode.TRUE_NODE;
 			
 		// case L_PAREN일 경우와 case R_PAREN일 경우에 대해서 작성
 		// L_PAREN일 경우 parseExprList()를 호출하여 처리
 		case L_PAREN:
-			ListNode listNode = new ListNode();
-			listNode.value = parseExprList();
-			return listNode;
-			//내용 채우기
+			return parseExprList();
 			
 		case R_PAREN:
-			return null;
+			return END_OF_LIST;
+			
+		case APOSTROPHE:
+			QuoteNode quoteNode = new QuoteNode(parseExpr());
+			ListNode listNode = ListNode.cons(quoteNode, ListNode.ENDLIST);
+			return listNode;
+			
+		case QUOTE:
+			return new QuoteNode(parseExpr());
 			
 		default:
-			//head의 next를 만들고 head를 반환하도록 작성
 			System.out.println("Parsing Error!");
 			return null;
 		}
 	}
 	
 	//List의 value를 생성하는 메소드
-	private Node parseExprList() {
+	private ListNode parseExprList() {
 		Node head = parseExpr();
 		
 		if(head == null)
 			return null;
-		head.setNext(parseExprList());
-		return head;
+		if(head == END_OF_LIST)	// if next token is R_PAREN
+			return ListNode.ENDLIST;
+		ListNode tail = parseExprList();
+		
+		if(tail == null)
+			return null;
+		
+		return ListNode.cons(head, tail);
 	}
 }

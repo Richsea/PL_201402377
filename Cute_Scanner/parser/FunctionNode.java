@@ -5,7 +5,7 @@ import java.util.Map;
 
 import lexer.TokenType;
 
-public class FunctionNode extends Node{
+public class FunctionNode implements ValueNode{
 	public enum FunctionType{
 		ATOM_Q	{ TokenType tokenType() { return TokenType.ATOM_Q;} },
 		CAR		{ TokenType tokenType() { return TokenType.CAR;} },
