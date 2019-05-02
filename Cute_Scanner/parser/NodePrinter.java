@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class NodePrinter {
-	private final String OUTPUT_FILENAME = "output06.txt";
+	private final String OUTPUT_FILENAME = "output07.txt";
 	private StringBuffer sb = new StringBuffer();
 	private Node root;
 	
@@ -27,18 +27,24 @@ public class NodePrinter {
 		}
 		
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
+		sb.append("[" + listNode + "]");
 	}
 	private void printNode(QuoteNode quoteNode)
 	{
 		if(quoteNode.nodeInside() == null)
 			return;
+		
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
+		sb.append("[" + quoteNode + "]");
+		
 	}
 	private void printNode(Node node)
 	{
 		if(node == null)
 			return;
+		
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
+		sb.append("[" + ListNode.cons(node, null).car() + "]");
 	}
 	/*
 	private void printNode(Node head) {
