@@ -25,33 +25,21 @@ public class NodePrinter {
 		{
 			return;
 		}
-				
+		
+		boolean isQuoteNode = false;
+		if(listNode.car() instanceof QuoteNode)
+			isQuoteNode = true;
+		
 		sb.append("( ");
 		
-		while(!(listNode.car() instanceof ListNode))	// ListNode가 아니면 조건문 실행
+		while(listNode != ListNode.ENDLIST)
 		{
-			if(listNode.car() instanceof QuoteNode)
-			{
-				printNode((QuoteNode)listNode.car());
-				listNode = listNode.cdr();
-					
-				return;
-			}
-			
 			printNode(listNode.car());
 			listNode = listNode.cdr();
-			
-			if(listNode == ListNode.ENDLIST)
-				break;
 		}
 		
-		while(listNode != ListNode.ENDLIST)				// ListNode가 아닌 Node를 처리하기 위한 조건문
-		{
-			printNode(listNode.car());
-			listNode = listNode.cdr();				
-		}			
-		
-		sb.append(") ");
+		if(!isQuoteNode)
+			sb.append(") ");
 	}
 	
 	private void printNode(QuoteNode quoteNode)
@@ -62,8 +50,8 @@ public class NodePrinter {
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("'");
-				
-		printList((ListNode)quoteNode.nodeInside());
+		
+		printNode(((ListNode)quoteNode.nodeInside()));
 	}
 	
 	private void printNode(Node node)
