@@ -25,63 +25,53 @@ public class NodePrinter {
 		{
 			return;
 		}
+				
+		sb.append("( ");
 		
-		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
-		//if(listNode.car() instanceof QuoteNode)
-		//{
-		//	
-		//}
-		
-		sb.append("(");
-		
-		while(!(listNode.car() instanceof ListNode))	// list가 아님
+		while(!(listNode.car() instanceof ListNode))	// ListNode가 아니면 조건문 실행
 		{
+			if(listNode.car() instanceof QuoteNode)
+			{
+				printNode((QuoteNode)listNode.car());
+				listNode = listNode.cdr();
+					
+				return;
+			}
+			
 			printNode(listNode.car());
 			listNode = listNode.cdr();
 			
 			if(listNode == ListNode.ENDLIST)
-				return;
+				break;
 		}
-		printNode(listNode.car());
-		printNode(listNode.cdr().car());			
 		
-		sb.append(")");
+		while(listNode != ListNode.ENDLIST)				// ListNode가 아닌 Node를 처리하기 위한 조건문
+		{
+			printNode(listNode.car());
+			listNode = listNode.cdr();				
+		}			
+		
+		sb.append(") ");
 	}
+	
 	private void printNode(QuoteNode quoteNode)
 	{
 		if(quoteNode.nodeInside() == null)
 			return;
 		
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
-		sb.deleteCharAt(sb.length()-1);		//"("삭제하는 코드
+		sb.delete(sb.length() - 2, sb.length());
 		sb.append("'");
-		
-		/*
-		 * 문제점
-		 * 1. ListNode로 나왔을 때 범위를 잘라야 한다.
-		 * 2. "("와 ")" 제거 필요
-		 */
-		
-		Node nodeKind = ((ListNode)quoteNode).car();
-		
-		if(nodeKind instanceof ListNode)
-		{
-			//printList()
-		}
-		while(!(((ListNode)quoteNode).car() instanceof ListNode))
-		{
-		
-		}
-		sb.append("[" + quoteNode + "]");
-		
+				
+		printList((ListNode)quoteNode.nodeInside());
 	}
+	
 	private void printNode(Node node)
 	{
 		if(node == null)
 			return;
 		
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
-		
 		if(node instanceof ListNode)
 		{
 			printList((ListNode)node);
@@ -91,7 +81,7 @@ public class NodePrinter {
 			printNode((QuoteNode)node);
 		}
 		else
-			sb.append("[" + node + "]");
+			sb.append("[" + node + "] ");
 	}
 	
 	public void prettyPrint() {
