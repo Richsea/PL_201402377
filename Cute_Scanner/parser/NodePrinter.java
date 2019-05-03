@@ -51,7 +51,7 @@ public class NodePrinter {
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("'");
 		
-		printNode(((ListNode)quoteNode.nodeInside()));
+		printNode(quoteNode.nodeInside());
 	}
 	
 	private void printNode(Node node)
