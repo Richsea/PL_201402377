@@ -18,28 +18,52 @@ public class NodePrinter {
 	{
 		if(listNode == ListNode.EMPTYLIST)
 		{
-			sb.append("( )");
-			return;
-		}
-		if(listNode == ListNode.ENDLIST)
-		{
 			return;
 		}
 		
-		boolean isQuoteNode = false;
 		if(listNode.car() instanceof QuoteNode)
-			isQuoteNode = true;
+		{
+			/*
+			printNode(listNode.car());
+			Node node = ((QuoteNode)listNode.car()).nodeInside();
+			
+			printNode(node);
+			
+			listNode = listNode.cdr();
+			*/
+			
+			while(listNode != ListNode.EMPTYLIST)
+			{
+				printNode(listNode.car());
+				listNode = listNode.cdr();
+			}
+			return;
+		}
+		
+		if(listNode.car() instanceof FunctionNode)
+		{
+			FunctionNode fNode = (FunctionNode)listNode.car();
+			if(fNode.funcType == FunctionNode.FunctionType.CAR || fNode.funcType == FunctionNode.FunctionType.CDR || fNode.funcType == FunctionNode.FunctionType.COND)
+			{
+				listNode = listNode.cdr();
+				
+				//QuoteNode 출력
+				printNode(listNode.car());
+				listNode = listNode.cdr();
+								
+				printNode(listNode.car());
+				return;
+			}
+		}
+		
 		
 		sb.append("( ");
-		
-		while(listNode != ListNode.ENDLIST)
+		while(listNode != ListNode.EMPTYLIST)
 		{
 			printNode(listNode.car());
 			listNode = listNode.cdr();
 		}
-		
-		if(!isQuoteNode)
-			sb.append(") ");
+		sb.append(") ");
 	}
 	
 	private void printNode(QuoteNode quoteNode)
@@ -48,8 +72,34 @@ public class NodePrinter {
 			return;
 		
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
-		sb.delete(sb.length() - 2, sb.length());
 		sb.append("'");
+		
+		//Node node = quoteNode.nodeInside();
+		
+		if(((ListNode)this.root).car() instanceof FunctionNode)
+		{
+			FunctionNode fNode = (FunctionNode)((ListNode)this.root).car();
+			if(fNode.funcType == FunctionNode.FunctionType.CAR)
+			{
+				printNode(((ListNode)quoteNode.nodeInside()).car());				
+			}
+			else if(fNode.funcType == FunctionNode.FunctionType.CDR)
+			{
+				if(((ListNode)quoteNode.nodeInside()).cdr() == ListNode.EMPTYLIST)
+				{
+					sb.append("( ) ");
+				}
+				printNode(((ListNode)quoteNode.nodeInside()).cdr());
+			}
+			else if(fNode.funcType == FunctionNode.FunctionType.COND)
+			{
+				sb.append("( ");
+				printNode(((ListNode)quoteNode.nodeInside()).car());
+				printNode(((ListNode)quoteNode.nodeInside()).cdr());
+				sb.append(") ");
+			}
+			return;
+		}
 		
 		printNode(quoteNode.nodeInside());
 	}
@@ -69,7 +119,9 @@ public class NodePrinter {
 			printNode((QuoteNode)node);
 		}
 		else
-			sb.append("[" + node + "] ");
+		{			
+			sb.append(node);
+		}
 	}
 	
 	public void prettyPrint() {

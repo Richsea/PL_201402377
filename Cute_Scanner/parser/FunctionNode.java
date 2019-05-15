@@ -12,10 +12,12 @@ public class FunctionNode implements ValueNode{
 		CDR		{ TokenType tokenType() { return TokenType.CDR;} },
 		COND	{ TokenType tokenType() { return TokenType.COND;} },
 		DEFINE	{ TokenType tokenType() { return TokenType.DEFINE;} },
+		CONS	{ TokenType tokenType() { return TokenType.CONS;} },
 		EQ_Q	{ TokenType tokenType() { return TokenType.EQ_Q;} },
 		LAMBDA	{ TokenType tokenType() { return TokenType.LAMBDA;} },
 		NOT		{ TokenType tokenType() { return TokenType.NOT;} },
-		NULL_Q	{ TokenType tokenType() { return TokenType.NULL_Q;} };
+		NULL_Q	{ TokenType tokenType() { return TokenType.NULL_Q;} },
+		QUOTE	{ TokenType tokenType() { return TokenType.QUOTE;} };
 		
 		private static Map<TokenType, FunctionType> fromTokenType = new HashMap<TokenType, FunctionType>();
 	
@@ -33,17 +35,17 @@ public class FunctionNode implements ValueNode{
 		abstract TokenType tokenType();
 	}
 	//binaryOPNode 클래스를 보고 참고하여 작성
-	public FunctionType value;
+	public FunctionType funcType;
 	
 	@Override
 	public String toString()
 	{
-		return value.name();
+		return funcType.name();
 	}
 	
 	public void setValue(TokenType tType)
 	{
 		FunctionType fType = FunctionType.getFunctionType(tType);
-		value = fType;
+		funcType = fType;
 	}
 }

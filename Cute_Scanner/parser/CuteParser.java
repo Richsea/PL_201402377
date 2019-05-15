@@ -95,7 +95,7 @@ public class CuteParser {
 			
 		case APOSTROPHE:
 			QuoteNode quoteNode = new QuoteNode(parseExpr());
-			ListNode listNode = ListNode.cons(quoteNode, ListNode.ENDLIST);
+			ListNode listNode = ListNode.cons(quoteNode, ListNode.EMPTYLIST);
 			return listNode;
 			
 		case QUOTE:
@@ -114,7 +114,7 @@ public class CuteParser {
 		if(head == null)
 			return null;
 		if(head == END_OF_LIST)	// if next token is R_PAREN
-			return ListNode.ENDLIST;
+			return ListNode.EMPTYLIST;
 		ListNode tail = parseExprList();
 		
 		if(tail == null)

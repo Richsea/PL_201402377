@@ -1,26 +1,10 @@
 package parser;
 
 public interface ListNode extends Node{
-	
-	static ListNode EMPTYLIST = new ListNode()
+	ListNode EMPTYLIST = new ListNode()
 	{
 		@Override
 		public Node car() 
-		{
-			return null;
-		}
-		
-		@Override
-		public ListNode cdr()
-		{
-			return null;
-		}
-	};
-	
-	static ListNode ENDLIST = new ListNode()
-	{
-		@Override
-		public Node car()
 		{
 			return null;
 		}
