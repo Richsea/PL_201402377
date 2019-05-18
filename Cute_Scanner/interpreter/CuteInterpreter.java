@@ -2,16 +2,7 @@ package interpreter;
 
 import java.io.File;
 
-import parser.BinaryOpNode;
-import parser.BooleanNode;
-import parser.CuteParser;
-import parser.FunctionNode;
-import parser.IdNode;
-import parser.ListNode;
-import parser.Node;
-import parser.NodePrinter;
-import parser.ParserMain;
-import parser.QuoteNode;
+import parser.*;
 
 public class CuteInterpreter {
 	public static void main(String[] args)
@@ -36,6 +27,8 @@ public class CuteInterpreter {
 		if(rootExpr == null)
 			return null;
 		if(rootExpr instanceof IdNode)
+			return rootExpr;
+		else if(rootExpr instanceof IntNode)
 			return rootExpr;
 		else if(rootExpr instanceof BooleanNode)
 			return rootExpr;
@@ -67,8 +60,32 @@ public class CuteInterpreter {
 		{
 		//CAR, CDR, CONS등에 대한 동작 구현
 		case CAR:
+			if(operand.car() instanceof QuoteNode)
+			{
+				Node inNode = ((ListNode)((QuoteNode)operand.car()).nodeInside()).car();
+				if(inNode instanceof ListNode)
+					return new QuoteNode(inNode);
+				else
+					return inNode;
+			}
+			else	// functionNode가 나올 때
+			{
+				return ((ListNode)((QuoteNode)runExpr(operand)).nodeInside()).car();
+			}
+			
 		case CDR:
+			if(operand.car() instanceof QuoteNode)
+			{
+				Node inNode = ((ListNode)((QuoteNode)operand.car()).nodeInside()).cdr();
+				
+				return new QuoteNode(inNode);
+			}
+			else	// functionNode가 나올 때
+			{
+				return new QuoteNode(((ListNode)((QuoteNode)runExpr(operand)).nodeInside()).cdr());
+			}
 		case CONS:
+			
 		
 		default:
 			break;
