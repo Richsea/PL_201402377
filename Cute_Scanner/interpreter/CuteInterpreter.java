@@ -208,6 +208,20 @@ public class CuteInterpreter {
 			return BooleanNode.TRUE_NODE;
 			
 		case COND:
+			headNode = runExpr(operand.car());
+			tailNode = runExpr(operand.cdr().car());
+			
+			if(runExpr(((ListNode)headNode).car()) == BooleanNode.TRUE_NODE)
+			{
+				return runExpr(((ListNode)headNode).cdr().car());
+			}
+			
+			if(runExpr(((ListNode)tailNode).car()) == BooleanNode.TRUE_NODE)
+			{
+				return runExpr(((ListNode)tailNode).cdr().car());
+			}
+			
+			return null;
 			
 		default:
 			break;
