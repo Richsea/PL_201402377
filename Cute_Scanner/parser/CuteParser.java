@@ -67,6 +67,7 @@ public class CuteParser {
 		case CAR:
 		case CDR:
 		case COND:
+		case CONS:
 		case DEFINE:
 		case EQ_Q:
 		case LAMBDA:

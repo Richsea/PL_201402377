@@ -50,7 +50,6 @@ public class NodePrinter {
 		// 이후 부분을 주어진 출력 형식에 맞게 코드를 작성하시오
 		sb.append("'");
 		
-		System.out.println(quoteNode.nodeInside());
 		if(((ListNode)quoteNode.nodeInside()).car() == null)
 			sb.append("( ) ");
 		
