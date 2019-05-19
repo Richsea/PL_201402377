@@ -169,6 +169,42 @@ public class CuteInterpreter {
 			return BooleanNode.TRUE_NODE;	// ValuNode일 경우
 			
 		case EQ_Q:
+			if(operand.car() instanceof ValueNode)
+				headNode = operand.car();
+			else
+				headNode = runExpr((ListNode)operand.car());
+
+			if(operand.cdr().car() instanceof ValueNode)
+				tailNode = operand.cdr().car();
+			else
+				tailNode = runExpr((ListNode)operand.cdr().car());
+			
+			/*
+			 * ValueNode일 경우 바로 비교
+			 */
+			if(headNode instanceof ValueNode && tailNode instanceof ValueNode)
+			{
+				if(headNode.toString().equals(tailNode.toString()))
+					return BooleanNode.TRUE_NODE;
+				return BooleanNode.FALSE_NODE;
+			}
+						
+			/*
+			 * ValueNode가 아닌 경우는 QuoteNode일 경우 이지만 둘 중 하나만 QuoteNode일 수도 있음
+			 * 이 조건문을 통과한 후 headNode와 tailNode는 QuoteNode inside 결과값을 갖게 된다.
+			 */
+			if(((ListNode)headNode).car() instanceof QuoteNode && ((ListNode)tailNode).car() instanceof QuoteNode)
+			{
+				headNode = runExpr(((QuoteNode)((ListNode)headNode).car()).nodeInside());
+				tailNode = runExpr(((QuoteNode)((ListNode)tailNode).car()).nodeInside());
+			}
+			
+			if(headNode instanceof ValueNode && tailNode instanceof ValueNode)
+			{
+				if(headNode.toString().equals(tailNode.toString()))
+					return BooleanNode.TRUE_NODE;
+			}
+			return BooleanNode.FALSE_NODE;
 			
 		default:
 			break;
