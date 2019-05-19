@@ -169,15 +169,8 @@ public class CuteInterpreter {
 			return BooleanNode.TRUE_NODE;	// ValuNode일 경우
 			
 		case EQ_Q:
-			if(operand.car() instanceof ValueNode)
-				headNode = operand.car();
-			else
-				headNode = runExpr((ListNode)operand.car());
-
-			if(operand.cdr().car() instanceof ValueNode)
-				tailNode = operand.cdr().car();
-			else
-				tailNode = runExpr((ListNode)operand.cdr().car());
+			headNode = runExpr(operand.car());
+			tailNode = runExpr(operand.cdr().car());
 			
 			/*
 			 * ValueNode일 경우 바로 비교
@@ -206,6 +199,16 @@ public class CuteInterpreter {
 			}
 			return BooleanNode.FALSE_NODE;
 			
+		case NOT:
+			headNode = runExpr(operand);
+			
+			if(headNode == BooleanNode.TRUE_NODE)
+				return BooleanNode.FALSE_NODE;
+			
+			return BooleanNode.TRUE_NODE;
+			
+		case COND:
+			
 		default:
 			break;
 		}
@@ -228,15 +231,46 @@ public class CuteInterpreter {
 	private Node runBinary(ListNode list)
 	{
 		BinaryOpNode operator = (BinaryOpNode)list.car();
+		Node firstItem;
+		Node secondItem;
+	
+		firstItem = runExpr((list.cdr().car()));
+		secondItem = runExpr((list.cdr().cdr().car()));
+		
+		int data1 = Integer.parseInt(firstItem.toString());
+		int data2 = Integer.parseInt(secondItem.toString());
 		
 		//구현과정에서 필요한 변수 및 함수 작업 가능
 		switch(operator.binType)
 		{
 		//+,-./ 등에 대한 바이너리 연산 동작 구현
-		case PLUS:
+		
+		case PLUS:	
+			return new IntNode(String.valueOf(data1+data2));
+			
 		case MINUS:
+			return new IntNode(String.valueOf(data1-data2));
+			
 		case TIMES:
+			return new IntNode(String.valueOf(data1*data2));
+			
 		case DIV:
+			return new IntNode(String.valueOf(data1/data2));
+			
+		case GT:
+			if(data1 > data2)
+				return BooleanNode.TRUE_NODE;
+			return BooleanNode.FALSE_NODE;
+			
+		case LT:
+			if(data1 < data2)
+				return BooleanNode.TRUE_NODE;
+			return BooleanNode.FALSE_NODE;
+			
+		case EQ:
+			if(data1 == data2)
+				return BooleanNode.TRUE_NODE;
+			return BooleanNode.FALSE_NODE;
 			
 		default:
 			break;
