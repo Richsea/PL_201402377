@@ -181,17 +181,28 @@ public class CuteInterpreter {
 					return BooleanNode.TRUE_NODE;
 				return BooleanNode.FALSE_NODE;
 			}
-						
-			/*
-			 * ValueNode가 아닌 경우는 QuoteNode일 경우 이지만 둘 중 하나만 QuoteNode일 수도 있음
-			 * 이 조건문을 통과한 후 headNode와 tailNode는 QuoteNode inside 결과값을 갖게 된다.
-			 */
-			if(((ListNode)headNode).car() instanceof QuoteNode && ((ListNode)tailNode).car() instanceof QuoteNode)
-			{
-				headNode = runExpr(((QuoteNode)((ListNode)headNode).car()).nodeInside());
-				tailNode = runExpr(((QuoteNode)((ListNode)tailNode).car()).nodeInside());
-			}
 			
+			/*
+			 * ListNode일 경우 처리
+			 */
+			if(headNode instanceof ListNode)
+			{
+				if(((ListNode)headNode).car() instanceof QuoteNode)
+					headNode = runExpr(((QuoteNode)((ListNode)headNode).car()).nodeInside());
+				else
+					headNode = runExpr(((ListNode)headNode).car());
+			}
+			if(tailNode instanceof ListNode)
+			{
+				if(((ListNode)tailNode).car() instanceof QuoteNode)
+					tailNode = runExpr(((QuoteNode)((ListNode)tailNode).car()).nodeInside());
+				else
+					tailNode = runExpr(((ListNode)tailNode).car());	
+			}
+									
+			/*
+			 * 진행 결과가 ValueNode인지 확인
+			 */
 			if(headNode instanceof ValueNode && tailNode instanceof ValueNode)
 			{
 				if(headNode.toString().equals(tailNode.toString()))
