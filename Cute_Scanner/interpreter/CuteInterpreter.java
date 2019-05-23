@@ -62,9 +62,23 @@ public class CuteInterpreter {
 		case CAR:
 			if(operand.car() instanceof QuoteNode)
 			{
-				Node inNode = ((ListNode)((QuoteNode)operand.car()).nodeInside()).car();
+				Node inNode = runExpr(((QuoteNode)operand.car()).nodeInside());
+				
+				/*
+				 * runExpr의 결과로 QuoteNode 내부의 List가 그대로 반환된 경우 ( car() 처리 작업 필요)
+				 */
 				if(inNode instanceof ListNode)
+				{
+					inNode = ((ListNode)inNode).car();
+				}
+				
+				/*
+				 * 결과 출력을 위한 process
+				 */
+				if(inNode instanceof ListNode)
+				{
 					return new QuoteNode(inNode);
+				}
 				else
 					return inNode;
 			}
@@ -75,10 +89,15 @@ public class CuteInterpreter {
 			
 		case CDR:
 			if(operand.car() instanceof QuoteNode)
-			{				
-				return new QuoteNode(((ListNode)((QuoteNode)operand.car()).nodeInside()).cdr());
+			{
+				Node inNode = runExpr(((QuoteNode)operand.car()).nodeInside());
+				
+				if(inNode instanceof ListNode)
+					return new QuoteNode(((ListNode)inNode).cdr());
+				else
+					return new QuoteNode(ListNode.cons(ListNode.EMPTYLIST, ListNode.EMPTYLIST));
 			}
-			else	// functionNode가 나올 때
+			else	// cdr 내부에  cdr이 선언될 때
 			{
 				return new QuoteNode(((ListNode)((QuoteNode)runExpr(operand)).nodeInside()).cdr());
 			}
