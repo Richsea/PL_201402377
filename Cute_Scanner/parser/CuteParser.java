@@ -2,6 +2,7 @@ package parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 
 import lexer.Scanner;
@@ -17,6 +18,15 @@ public class CuteParser {
 		try {
 			tokens = Scanner.scan(file);
 		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public CuteParser(StringBuffer sb)
+	{
+		try {
+			tokens = Scanner.scan(sb);
+		}catch(IOException e) {
 			e.printStackTrace();
 		}
 	}

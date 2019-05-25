@@ -2,6 +2,7 @@ package lexer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -13,6 +14,11 @@ public class Scanner {
     public static Iterator<Token> scan(File file) throws FileNotFoundException {
         ScanContext context = new ScanContext(file);
         return new TokenIterator(context);
+    }
+    
+    public static Iterator<Token> scan(StringBuffer sb) throws IOException{
+    	ScanContext context = new ScanContext(sb);
+    	return new TokenIterator(context);
     }
 
     // return tokens as a Stream 

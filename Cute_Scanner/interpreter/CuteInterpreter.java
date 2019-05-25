@@ -1,6 +1,9 @@
 package interpreter;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import parser.*;
 
@@ -9,7 +12,19 @@ public class CuteInterpreter {
 	{
 		ClassLoader cloader = ParserMain.class.getClassLoader();
 		File file = new File(cloader.getResource("interpreter/as08.txt").getFile());
-		CuteParser cuteParser = new CuteParser(file);
+		InputStreamReader input = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(input);
+		StringBuffer sb = new StringBuffer();
+		
+		System.out.print("> ");
+		try {
+			sb.append(br.readLine());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		CuteParser cuteParser = new CuteParser(sb);
+		//CuteParser cuteParser = new CuteParser(file);
 		CuteInterpreter interpreter = new CuteInterpreter();
 		Node parseTree = cuteParser.parseExpr();
 		Node resultNode = interpreter.runExpr(parseTree);
