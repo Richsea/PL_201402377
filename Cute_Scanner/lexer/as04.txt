@@ -1,1 +1,0 @@
-( define length ( lamda ( x ) ( cond ( ( null? x ) 0 ) ( #T ( + 1 ( length ( cdr x ) ) ) ) ) ) )

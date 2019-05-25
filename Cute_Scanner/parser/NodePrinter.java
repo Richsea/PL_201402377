@@ -79,7 +79,7 @@ public class NodePrinter {
 	public void prettyPrint() {
 		printNode(root);
 		
-		System.out.println(sb.toString());
+		System.out.println("..." + sb.toString());
 		try(FileWriter fw = new FileWriter(OUTPUT_FILENAME);
 			
 				PrintWriter pw = new PrintWriter(fw)){

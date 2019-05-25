@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.Reader;
 
 class CharStream {
-	//private final Reader reader;
 	private Reader reader;
 	private StringBuffer sb;
 	private Character cache;
@@ -40,9 +39,14 @@ class CharStream {
 			
 			return Char.of(ch);
 		}
-		else {
-			//int ch = sb.read();
-			int ch = sb.charAt(index);
+		else 
+		{
+			int ch;
+			if(sb.length() <= index)
+				ch = -1;
+			else
+				ch = sb.charAt(index);
+			
 			index ++;
 			if ( ch == -1 ) {
 				return Char.end();

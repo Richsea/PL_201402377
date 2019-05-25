@@ -1,7 +1,6 @@
 package interpreter;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -10,26 +9,25 @@ import parser.*;
 public class CuteInterpreter {
 	public static void main(String[] args)
 	{
-		ClassLoader cloader = ParserMain.class.getClassLoader();
-		File file = new File(cloader.getResource("interpreter/as08.txt").getFile());
-		InputStreamReader input = new InputStreamReader(System.in);
-		BufferedReader br = new BufferedReader(input);
-		StringBuffer sb = new StringBuffer();
-		
-		System.out.print("> ");
-		try {
-			sb.append(br.readLine());
-		} catch (IOException e) {
-			e.printStackTrace();
+		while(true) {
+			InputStreamReader input = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(input);
+			StringBuffer sb = new StringBuffer();
+			
+			System.out.print("> ");
+			try {
+				sb.append(br.readLine());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			CuteParser cuteParser = new CuteParser(sb);
+			CuteInterpreter interpreter = new CuteInterpreter();
+			Node parseTree = cuteParser.parseExpr();
+			Node resultNode = interpreter.runExpr(parseTree);
+			NodePrinter nodePrinter = new NodePrinter(resultNode);
+			nodePrinter.prettyPrint();
 		}
-		
-		CuteParser cuteParser = new CuteParser(sb);
-		//CuteParser cuteParser = new CuteParser(file);
-		CuteInterpreter interpreter = new CuteInterpreter();
-		Node parseTree = cuteParser.parseExpr();
-		Node resultNode = interpreter.runExpr(parseTree);
-		NodePrinter nodePrinter = new NodePrinter(resultNode);
-		nodePrinter.prettyPrint();
 	}
 	
 	private void errorLog(String err)
