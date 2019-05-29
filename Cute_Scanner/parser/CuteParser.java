@@ -124,6 +124,28 @@ public class CuteParser {
 		
 		if(head == null)
 			return null;
+		if(head instanceof FunctionNode)
+		{
+			if(((FunctionNode)head).funcType == FunctionNode.FunctionType.DEFINE)
+			{
+				//define에 심벌테이블 추가
+				ListNode define = parseExprList();
+				// head가 DEFINE임
+				// tail로 온데이터가 , a 1 같은 list 데이터 존재
+				define = ListNode.cons(head, define);
+				
+				Node symbolName = define.car();
+				Node symbolDefine = define.cdr();	// .cdr().car()로 하면 define plus1 (lambda (x) (+ x 1) 과 같이 정의될 때 문제 발생
+				
+				/*
+				 *  idNode에 다음에 오는 데이터 추가
+				 *  symbolName이 Hash의 key
+				 *  symbolDeinfe이 hash의 elements
+				 */
+				
+				return ListNode.EMPTYLIST;
+			}
+		}
 		if(head == END_OF_LIST)	// if next token is R_PAREN
 			return ListNode.EMPTYLIST;
 		ListNode tail = parseExprList();
