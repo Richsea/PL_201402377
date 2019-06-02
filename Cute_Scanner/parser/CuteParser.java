@@ -132,10 +132,19 @@ public class CuteParser {
 				ListNode define = parseExprList();
 				// head가 DEFINE임
 				// tail로 온데이터가 , a 1 같은 list 데이터 존재
-				define = ListNode.cons(head, define);
+				//define = ListNode.cons(head, define);	?? head는 DEFINE
 				
 				Node symbolName = define.car();
 				Node symbolDefine = define.cdr();	// .cdr().car()로 하면 define plus1 (lambda (x) (+ x 1) 과 같이 정의될 때 문제 발생
+				
+				if(!(symbolName instanceof IdNode))
+				{
+					System.out.println("Parsing Error!");
+					return null;
+				}
+				
+				((IdNode)symbolName).addDefine(symbolDefine);
+				
 				
 				/*
 				 *  idNode에 다음에 오는 데이터 추가
