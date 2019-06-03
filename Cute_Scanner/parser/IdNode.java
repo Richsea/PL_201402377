@@ -11,17 +11,18 @@ import parser.BinaryOpNode.BinType;
 public class IdNode implements ValueNode{
 	private String idString;
 	
-	private static Map<String, Node> insertTable = new HashMap<String, Node>();
+	private static Map<String, Node> defineTable = new HashMap<String, Node>();
 	
 	/*
 	 * define을 추가하기 위한 함수
 	 */
 	void addDefine(Node node)
 	{
-		for(String key : insertTable.keySet())
-		{
-			insertTable.put(idString, node);
-		}
+		defineTable.put(idString, node);
+	}
+	public Node getDefine()
+	{
+		return defineTable.get(idString);
 	}
 	
 	public IdNode(String text)

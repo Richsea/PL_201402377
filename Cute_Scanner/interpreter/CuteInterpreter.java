@@ -72,7 +72,7 @@ public class CuteInterpreter {
 		switch(operator.funcType)
 		{
 		//CAR, CDR, CONS등에 대한 동작 구현
-		case CAR:
+		case CAR:			
 			if(operand.car() instanceof QuoteNode)
 			{
 				Node inNode = runExpr(((QuoteNode)operand.car()).nodeInside());
