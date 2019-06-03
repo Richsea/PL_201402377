@@ -146,17 +146,7 @@ public class CuteParser {
 				return ListNode.EMPTYLIST;
 			}
 		}
-		if(head instanceof IdNode)
-		{
-			Node definedList = ((IdNode)head).getDefine();
-			
-			if(definedList != null)
-			{
-				ListNode tail = parseExprList();
-				
-				return ListNode.cons(definedList, tail);
-			}
-		}
+
 		if(head == END_OF_LIST)	// if next token is R_PAREN
 			return ListNode.EMPTYLIST;
 		ListNode tail = parseExprList();

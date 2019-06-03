@@ -40,7 +40,14 @@ public class CuteInterpreter {
 		if(rootExpr == null)
 			return null;
 		if(rootExpr instanceof IdNode)
+		{
+			Node definedList = ((IdNode)rootExpr).getDefine();
+			if(definedList != null)
+			{
+				return this.runExpr(definedList);
+			}
 			return rootExpr;
+		}
 		else if(rootExpr instanceof IntNode)
 			return rootExpr;
 		else if(rootExpr instanceof BooleanNode)
@@ -69,13 +76,22 @@ public class CuteInterpreter {
 	
 	private Node runFunction(FunctionNode operator, ListNode operand)
 	{
+		Node headNode = operand.car();
+		Node tailNode = operand.cdr().car();
+		
 		switch(operator.funcType)
 		{
 		//CAR, CDR, CONS등에 대한 동작 구현
-		case CAR:			
-			if(operand.car() instanceof QuoteNode)
+		case CAR:
+			/*
+			 * #define된 데이터일 경우 추가
+			 */
+			if(headNode instanceof IdNode)
+				headNode = ((ListNode)runExpr(headNode)).car();
+			
+			if(headNode instanceof QuoteNode)
 			{
-				Node inNode = runExpr(((QuoteNode)operand.car()).nodeInside());
+				Node inNode = runExpr(((QuoteNode)headNode).nodeInside());
 				
 				/*
 				 * runExpr의 결과로 QuoteNode 내부의 List가 그대로 반환된 경우 ( car() 처리 작업 필요)
@@ -100,10 +116,16 @@ public class CuteInterpreter {
 				return ((ListNode)((QuoteNode)runExpr(operand)).nodeInside()).car();
 			}
 			
-		case CDR:
-			if(operand.car() instanceof QuoteNode)
+		case CDR:		
+			/*
+			 * #define된 데이터일 경우 추가
+			 */
+			if(headNode instanceof IdNode)
+				headNode = ((ListNode)runExpr(headNode)).car();
+			
+			if(headNode instanceof QuoteNode)
 			{
-				Node inNode = runExpr(((QuoteNode)operand.car()).nodeInside());
+				Node inNode = runExpr(((QuoteNode)headNode).nodeInside());
 				
 				if(inNode instanceof ListNode)
 					return new QuoteNode(((ListNode)inNode).cdr());
@@ -116,8 +138,14 @@ public class CuteInterpreter {
 			}
 			
 		case CONS:
-			Node headNode = operand.car();
-			Node tailNode = operand.cdr().car();
+			/*
+			 * #define된 데이터일 경우 추가
+			 */
+			if(headNode instanceof IdNode)
+				headNode = ((ListNode)runExpr(headNode));
+			
+			if(tailNode instanceof IdNode)
+				tailNode = ((ListNode)runExpr(tailNode));
 			
 			/*
 			 * headNode가 되는 부분 처리
@@ -168,14 +196,14 @@ public class CuteInterpreter {
 			return new QuoteNode(ListNode.cons(headNode, (ListNode)tailNode));
 			
 		case NULL_Q:
-			if(((ListNode)(((QuoteNode)operand.car()).nodeInside())).car() == null)
+			if(((ListNode)(((QuoteNode)headNode).nodeInside())).car() == null)
 			{
 				return BooleanNode.TRUE_NODE;
 			}
 			return BooleanNode.FALSE_NODE;
 			
 		case ATOM_Q:
-			Node atomNode = runExpr(((QuoteNode)operand.car()).nodeInside());
+			Node atomNode = runExpr(((QuoteNode)headNode).nodeInside());
 			if(atomNode instanceof ListNode)	// List일 때
 			{				
 				if(((ListNode)atomNode).car() == null)	
@@ -201,8 +229,8 @@ public class CuteInterpreter {
 			return BooleanNode.TRUE_NODE;	// ValuNode일 경우
 			
 		case EQ_Q:
-			headNode = runExpr(operand.car());
-			tailNode = runExpr(operand.cdr().car());
+			headNode = runExpr(headNode);
+			tailNode = runExpr(tailNode);
 			
 			/*
 			 * ValueNode일 경우 바로 비교
@@ -251,8 +279,8 @@ public class CuteInterpreter {
 			return BooleanNode.TRUE_NODE;
 			
 		case COND:
-			headNode = runExpr(operand.car());
-			tailNode = runExpr(operand.cdr().car());
+			headNode = runExpr(headNode);
+			tailNode = runExpr(tailNode);
 			
 			if(runExpr(((ListNode)headNode).car()) == BooleanNode.TRUE_NODE)
 			{
