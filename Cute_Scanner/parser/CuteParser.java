@@ -141,7 +141,7 @@ public class CuteParser {
 					return null;
 				}
 				
-				((IdNode)symbolName).addDefine(defineList.cdr().car());
+				((IdNode)symbolName).addDefine(defineList.cdr());
 				
 				return ListNode.EMPTYLIST;
 			}

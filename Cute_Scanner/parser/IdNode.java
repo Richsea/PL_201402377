@@ -11,18 +11,50 @@ import parser.BinaryOpNode.BinType;
 public class IdNode implements ValueNode{
 	private String idString;
 	
-	private static Map<String, Node> defineTable = new HashMap<String, Node>();
+	private static Map<String, Node> insertTable = new HashMap<String, Node>();
 	
 	/*
 	 * define을 추가하기 위한 함수
 	 */
-	void addDefine(Node node)
+	void addDefine(ListNode node)
 	{
-		defineTable.put(idString, node);
+		node = stringToDefine(node);
+		
+		if(node == null) return;
+		insertTable.put(idString, node.car());
 	}
-	public Node getDefine()
+	public Node lookupTable()
 	{
-		return defineTable.get(idString);
+		return insertTable.get(idString);
+	}
+	
+	private ListNode stringToDefine(ListNode node)
+	{
+		if(node == ListNode.EMPTYLIST) return ListNode.EMPTYLIST;
+		
+		Node headNode = node.car();
+		ListNode tailNode = node.cdr();
+		
+		tailNode = stringToDefine(tailNode);	// tailNode의 EmptyNode가 나오면 종료
+		
+		if(headNode instanceof IdNode)
+		{
+			headNode = ((IdNode)headNode).lookupTable();
+			
+			if(headNode == null)
+			{
+				return null;
+			}
+		}
+		
+		if(headNode instanceof ListNode)
+		{
+			headNode = stringToDefine((ListNode)headNode);
+			
+			if(headNode == null) return null;
+		}
+		
+		return ListNode.cons(headNode, tailNode);
 	}
 	
 	public IdNode(String text)
