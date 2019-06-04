@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
+import interpreter.CuteInterpreter;
 import lexer.Scanner;
 import lexer.Token;
 import lexer.TokenType;
@@ -133,7 +134,7 @@ public class CuteParser {
 				Node symbolName = defineList.car();
 				
 				/*
-				 * define 이후에 idNode가 아닐 경우 처리
+				 * define할 symbol이 idNode가 아닐 경우 처리
 				 */
 				if(!(symbolName instanceof IdNode))
 				{
@@ -142,22 +143,26 @@ public class CuteParser {
 				}
 				
 				/*
-				 * define에 ListNode가 들어갈 경우 table에 추가하지 않는다.
+				 * define된 symbol을 table에 추가
+				 * + 계산 완료된 식을 table에 추가한다. 
+				 * + 계산되지 않는 ListNode가 들어갈 경우 table에 추가하지 않는다.
 				 */
+				CuteInterpreter interpreter = new CuteInterpreter();
 				
-				if(defineList.cdr().car() instanceof ListNode)
+				Node temp = interpreter.runExpr(defineList.cdr().car());
+				
+				if(temp instanceof ListNode)
 				{
-					if(((ListNode)defineList.cdr().car()).car() instanceof QuoteNode)
+					if(((ListNode)temp).car() instanceof QuoteNode)
 					{
-						((IdNode)symbolName).addDefine((ListNode)defineList.cdr().car());
+						((IdNode)symbolName).addDefine((ListNode)temp);
 						return ListNode.EMPTYLIST;
 					}
 					System.out.println("define syntax is not correct");
 					return null;
 				}
 				
-				((IdNode)symbolName).addDefine(defineList.cdr());
-				
+				((IdNode)symbolName).addDefine(temp);				
 				return ListNode.EMPTYLIST;
 			}
 		}

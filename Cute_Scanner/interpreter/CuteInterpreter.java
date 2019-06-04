@@ -43,10 +43,8 @@ public class CuteInterpreter {
 		{
 			Node definedList = ((IdNode)rootExpr).lookupTable();
 			if(definedList != null)
-			{
 				return definedList;
-						//this.runExpr(definedList);
-			}
+			
 			return rootExpr;
 		}
 		else if(rootExpr instanceof IntNode)
@@ -378,10 +376,5 @@ public class CuteInterpreter {
 			break;
 		}
 		return null;
-	}
-	
-	private Node runQuote(ListNode node)
-	{
-		return((QuoteNode) node.car()).nodeInside();
 	}
 }
