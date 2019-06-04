@@ -44,7 +44,8 @@ public class CuteInterpreter {
 			Node definedList = ((IdNode)rootExpr).lookupTable();
 			if(definedList != null)
 			{
-				return this.runExpr(definedList);
+				return definedList;
+						//this.runExpr(definedList);
 			}
 			return rootExpr;
 		}
@@ -115,12 +116,10 @@ public class CuteInterpreter {
 				 * 결과 출력을 위한 process
 				 */
 				if(inNode instanceof ListNode)
-				{
 					return new QuoteNode(inNode);
-				}
 				else if(inNode instanceof IdNode)
 				{
-					return runExpr(inNode);
+					return new QuoteNode(inNode);
 				}
 				else
 					return inNode;
@@ -137,15 +136,6 @@ public class CuteInterpreter {
 				
 				if(inNode instanceof ListNode)
 				{
-					if(((ListNode) inNode).cdr().car() instanceof IdNode)
-					{
-						Node inNodeHead = (((ListNode) inNode).cdr().car());
-						ListNode inNodeTail = (((ListNode) inNode).cdr().cdr());
-						
-						inNodeHead = runExpr(inNodeHead);
-						
-						return new QuoteNode(ListNode.cons(inNodeHead, inNodeTail));
-					}
 					return new QuoteNode(((ListNode)inNode).cdr());
 				}
 				else

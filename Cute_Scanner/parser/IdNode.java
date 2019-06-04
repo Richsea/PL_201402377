@@ -23,11 +23,18 @@ public class IdNode implements ValueNode{
 		if(node == null) return;
 		insertTable.put(idString, node.car());
 	}
+	
+	/*
+	 * table에서 define된 symbol인지 확인하고 추가하는 함수
+	 */
 	public Node lookupTable()
 	{
 		return insertTable.get(idString);
 	}
 	
+	/*
+	 * Define 내부에 Define된 symbol을 사용할 경우 변경하여 저장해주기 위해 생성한 함수
+	 */
 	private ListNode stringToDefine(ListNode node)
 	{
 		if(node == ListNode.EMPTYLIST) return ListNode.EMPTYLIST;

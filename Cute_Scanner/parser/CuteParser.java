@@ -141,6 +141,21 @@ public class CuteParser {
 					return null;
 				}
 				
+				/*
+				 * define에 ListNode가 들어갈 경우 table에 추가하지 않는다.
+				 */
+				
+				if(defineList.cdr().car() instanceof ListNode)
+				{
+					if(((ListNode)defineList.cdr().car()).car() instanceof QuoteNode)
+					{
+						((IdNode)symbolName).addDefine((ListNode)defineList.cdr().car());
+						return ListNode.EMPTYLIST;
+					}
+					System.out.println("define syntax is not correct");
+					return null;
+				}
+				
 				((IdNode)symbolName).addDefine(defineList.cdr());
 				
 				return ListNode.EMPTYLIST;
