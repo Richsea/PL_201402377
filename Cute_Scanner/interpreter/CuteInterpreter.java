@@ -70,7 +70,61 @@ public class CuteInterpreter {
 		{
 			return runBinary(list);
 		}
+		if(list.car() instanceof ListNode)
+		{
+			if(((ListNode)(list.car())).car() instanceof FunctionNode)
+			{
+				if(((FunctionNode)((ListNode)(list.car())).car()).funcType == FunctionNode.FunctionType.LAMBDA)
+				{
+					
+					return runExpr(runLambda(((ListNode)(list.car())).cdr(), list.cdr()));
+				}
+			}
+		}
 		return list;
+	}
+	
+	private Node runLambda(ListNode operand, ListNode valueList)
+	{	
+		if(valueList.equals(ListNode.EMPTYLIST)) return ListNode.EMPTYLIST;
+		if(operand.equals(ListNode.EMPTYLIST)) return ListNode.EMPTYLIST;
+		
+		Node itemNode = operand.car();	// ListNode형태로 item 저장		
+		Node operationNode = operand.cdr().car();	// ListNode형태로 operation 저장
+		
+		return runMatchLambda((ListNode)itemNode, (ListNode)operationNode, (ListNode)valueList);
+	}
+	
+	private ListNode runMatchLambda(ListNode itemList, ListNode operation, ListNode valueList)
+	{
+		if(itemList.equals(ListNode.EMPTYLIST) && valueList.equals(ListNode.EMPTYLIST)) return operation;
+		
+		Node itemNode = itemList.car();
+		Node valueNode = runExpr(valueList.car());
+		
+		ListNode list = operation;
+		
+		list = matchLambda((IdNode)itemNode, list, (IntNode)valueNode);
+		
+		return runMatchLambda(itemList.cdr(), list, valueList.cdr());
+	}
+	
+	private ListNode matchLambda(IdNode item, ListNode operation, IntNode value)
+	{
+		if(operation.equals(ListNode.EMPTYLIST))
+			return ListNode.EMPTYLIST;
+		
+		Node head = operation.car();
+		ListNode tail = matchLambda(item, operation.cdr(), value);
+		
+		if(head instanceof IdNode)
+		{
+			if(item.toString().equals(((IdNode)head).toString()))
+			{
+				return ListNode.cons(value, tail);
+			}
+		}
+		return ListNode.cons(head, tail);
 	}
 	
 	private Node runFunction(FunctionNode operator, ListNode operand)

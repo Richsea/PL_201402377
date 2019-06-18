@@ -149,12 +149,32 @@ public class CuteParser {
 				 */
 				CuteInterpreter interpreter = new CuteInterpreter();
 				
-				Node temp = interpreter.runExpr(defineList.cdr().car());
+				Node temp = defineList.cdr().car();
+				
+				/*
+				 * lambda일 경우 추가
+				 */
+				if(temp instanceof ListNode)
+				{
+					if(((ListNode)temp).car() instanceof FunctionNode)
+					{
+						if(((FunctionNode)((ListNode)temp).car()).funcType == FunctionNode.FunctionType.LAMBDA)
+						{
+							((IdNode)symbolName).addDefine(((ListNode)temp));
+							return ListNode.EMPTYLIST;
+						}
+					}
+				}
+				
+				/*
+				 * lambda가 아닌 define
+				 */
+				temp = interpreter.runExpr(temp);
 				
 				if(temp instanceof ListNode)
 				{
 					if(((ListNode)temp).car() instanceof QuoteNode)
-					{
+					{	
 						((IdNode)symbolName).addDefine((ListNode)temp);
 						return ListNode.EMPTYLIST;
 					}
