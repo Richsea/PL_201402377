@@ -63,12 +63,19 @@ public class CuteInterpreter {
 		if(list.equals(ListNode.EMPTYLIST))
 			return list;
 		if(list.car() instanceof FunctionNode)
-		{
+		{			
 			return runFunction((FunctionNode)list.car(), (ListNode)stripList(list.cdr()));
 		}
 		if(list.car() instanceof BinaryOpNode)
 		{
 			return runBinary(list);
+		}
+		if(list.car() instanceof IdNode)
+		{
+			Node definedList = ((IdNode)list.car()).lookupTable();
+			definedList = runExpr(ListNode.cons(definedList, list.cdr()));
+			
+			return definedList;
 		}
 		if(list.car() instanceof ListNode)
 		{
@@ -92,10 +99,10 @@ public class CuteInterpreter {
 		Node itemNode = operand.car();	// ListNode형태로 item 저장		
 		Node operationNode = operand.cdr().car();	// ListNode형태로 operation 저장
 		
-		return runMatchLambda((ListNode)itemNode, (ListNode)operationNode, (ListNode)valueList);
+		return runLoopLambda((ListNode)itemNode, (ListNode)operationNode, (ListNode)valueList);
 	}
 	
-	private ListNode runMatchLambda(ListNode itemList, ListNode operation, ListNode valueList)
+	private ListNode runLoopLambda(ListNode itemList, ListNode operation, ListNode valueList)
 	{
 		if(itemList.equals(ListNode.EMPTYLIST) && valueList.equals(ListNode.EMPTYLIST)) return operation;
 		
@@ -104,12 +111,12 @@ public class CuteInterpreter {
 		
 		ListNode list = operation;
 		
-		list = matchLambda((IdNode)itemNode, list, (IntNode)valueNode);
+		list = matchLambda((IdNode)itemNode, list, valueNode);
 		
-		return runMatchLambda(itemList.cdr(), list, valueList.cdr());
+		return runLoopLambda(itemList.cdr(), list, valueList.cdr());
 	}
 	
-	private ListNode matchLambda(IdNode item, ListNode operation, IntNode value)
+	private ListNode matchLambda(IdNode item, ListNode operation, Node value)
 	{
 		if(operation.equals(ListNode.EMPTYLIST))
 			return ListNode.EMPTYLIST;
@@ -117,8 +124,25 @@ public class CuteInterpreter {
 		Node head = operation.car();
 		ListNode tail = matchLambda(item, operation.cdr(), value);
 		
+		if(head instanceof ListNode)
+		{
+			head = runExpr(((ListNode)head).car());
+			Node definedValueList = ((ListNode)operation.car()).cdr();	// define을 풀기 위한 함수
+			
+			head = runLambda(((ListNode) head).cdr(), (ListNode)definedValueList);
+			
+			head = matchLambda(item, (ListNode)head, value);
+			return ListNode.cons(head, tail);
+		}
+		
 		if(head instanceof IdNode)
 		{
+			// head가 define된 데이터일 경우 데이터를 풀어쓰기 위한 실행부분
+			Node definedList = ((IdNode)head).lookupTable();
+			if(definedList != null)
+				head = runExpr(definedList);
+			
+			// lambda에서 operator에서 item과 같은 부분에 데이터를 입력하는 기능
 			if(item.toString().equals(((IdNode)head).toString()))
 			{
 				return ListNode.cons(value, tail);
