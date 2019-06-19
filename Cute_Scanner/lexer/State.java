@@ -70,6 +70,12 @@ enum State {
 					context.append(v);
 					return GOTO_ACCEPT_ID;
 				case SPECIAL_CHAR:
+					if(v == '(' || v == ')')
+					{
+						GOTO_MATCHED(Token.ofName(context.getLexime()));
+						context.append(v);
+						return GOTO_MATCHED(TokenType.fromSpecialCharactor(v), context.getLexime());
+					}
 					return GOTO_FAILED;
 				case WS:
 				case END_OF_STREAM:
@@ -90,6 +96,12 @@ enum State {
 					context.append(ch.value());
 					return GOTO_ACCEPT_INT;
 				case SPECIAL_CHAR:
+					if(ch.value() == '(' || ch.value() == ')')
+					{
+						GOTO_MATCHED(INT, context.getLexime());
+						context.append(ch.value());
+						return GOTO_MATCHED(TokenType.fromSpecialCharactor(ch.value()), context.getLexime());
+					}
 					return GOTO_FAILED;
 				case WS:
 					return GOTO_MATCHED(INT, context.getLexime());
@@ -134,6 +146,12 @@ enum State {
 					context.append(v);
 					return GOTO_ACCEPT_INT;
 				case SPECIAL_CHAR:
+					if(v == '(' || v == ')')
+					{
+						GOTO_MATCHED(Token.ofName(context.getLexime()));
+						context.append(v);
+						return GOTO_MATCHED(TokenType.fromSpecialCharactor(v), context.getLexime());
+					}
 					return GOTO_FAILED;
 				case WS:
 					String lexme = context.getLexime();
