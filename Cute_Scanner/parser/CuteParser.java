@@ -194,6 +194,14 @@ public class CuteParser {
 		if(tail == null)
 			return null;
 		
+		/*
+		 * nested 함수를 위한 기능
+		 */
+		if(head.equals(ListNode.EMPTYLIST) && !tail.equals(ListNode.EMPTYLIST))
+		{
+			return tail;
+		}
+		
 		return ListNode.cons(head, tail);
 	}
 }
