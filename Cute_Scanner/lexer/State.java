@@ -72,9 +72,8 @@ enum State {
 				case SPECIAL_CHAR:
 					if(v == '(' || v == ')')
 					{
-						GOTO_MATCHED(Token.ofName(context.getLexime()));
-						context.append(v);
-						return GOTO_MATCHED(TokenType.fromSpecialCharactor(v), context.getLexime());
+						context.getCharStream().undoChar();
+						return GOTO_MATCHED(Token.ofName(context.getLexime()));
 					}
 					return GOTO_FAILED;
 				case WS:
@@ -98,13 +97,11 @@ enum State {
 				case SPECIAL_CHAR:
 					if(ch.value() == '(' || ch.value() == ')')
 					{
-						GOTO_MATCHED(INT, context.getLexime());
-						context.append(ch.value());
-						return GOTO_MATCHED(TokenType.fromSpecialCharactor(ch.value()), context.getLexime());
+						context.getCharStream().undoChar();
+						return GOTO_MATCHED(INT, context.getLexime());
 					}
 					return GOTO_FAILED;
 				case WS:
-					return GOTO_MATCHED(INT, context.getLexime());
 				case END_OF_STREAM:	//이부분 수정
 					return GOTO_MATCHED(INT, context.getLexime());
 				default:
@@ -148,9 +145,8 @@ enum State {
 				case SPECIAL_CHAR:
 					if(v == '(' || v == ')')
 					{
-						GOTO_MATCHED(Token.ofName(context.getLexime()));
-						context.append(v);
-						return GOTO_MATCHED(TokenType.fromSpecialCharactor(v), context.getLexime());
+						context.getCharStream().undoChar();
+						return GOTO_MATCHED(Token.ofName(context.getLexime()));
 					}
 					return GOTO_FAILED;
 				case WS:

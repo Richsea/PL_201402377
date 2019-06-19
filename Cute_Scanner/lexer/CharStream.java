@@ -57,6 +57,10 @@ class CharStream {
 		}
 	}
 	
+	void undoChar() {
+		index --;
+	}
+	
 	void pushBack(char ch) {
 		cache = ch;
 	}

@@ -83,7 +83,6 @@ public class CuteInterpreter {
 			{
 				if(((FunctionNode)((ListNode)(list.car())).car()).funcType == FunctionNode.FunctionType.LAMBDA)
 				{
-					
 					return runExpr(runLambda(((ListNode)(list.car())).cdr(), list.cdr()));
 				}
 			}
@@ -91,6 +90,10 @@ public class CuteInterpreter {
 		return list;
 	}
 	
+	/*
+	 * lambda 연산을 위해 identifier/expression 분리
+	 * identifier에 mapping할 value data들도 parameter로 입력받음(valueList)
+	 */
 	private Node runLambda(ListNode operand, ListNode valueList)
 	{	
 		if(valueList.equals(ListNode.EMPTYLIST)) return ListNode.EMPTYLIST;
@@ -102,6 +105,10 @@ public class CuteInterpreter {
 		return runLoopLambda((ListNode)itemNode, (ListNode)operationNode, (ListNode)valueList);
 	}
 	
+	/*
+	 * value와 item(identifier)를 매칭시키기 위한 함수
+	 * operation식의 변수에 값을 대입시키는 함수를 실행
+	 */
 	private ListNode runLoopLambda(ListNode itemList, ListNode operation, ListNode valueList)
 	{
 		if(itemList.equals(ListNode.EMPTYLIST) && valueList.equals(ListNode.EMPTYLIST)) return operation;
@@ -116,6 +123,9 @@ public class CuteInterpreter {
 		return runLoopLambda(itemList.cdr(), list, valueList.cdr());
 	}
 	
+	/*
+	 * operation식의 변수에 데이터를 대입시키는 함수
+	 */
 	private ListNode matchLambda(IdNode item, ListNode operation, Node value)
 	{
 		if(operation.equals(ListNode.EMPTYLIST))
@@ -124,6 +134,9 @@ public class CuteInterpreter {
 		Node head = operation.car();
 		ListNode tail = matchLambda(item, operation.cdr(), value);
 		
+		/*
+		 * 함수 내부에 전역 함수 호출 기능을 추가하기 위한 기능 
+		 */
 		if(head instanceof ListNode)
 		{
 			head = runExpr(((ListNode)head).car());
@@ -135,6 +148,9 @@ public class CuteInterpreter {
 			return ListNode.cons(head, tail);
 		}
 		
+		/*
+		 * 변수에 데이터를 대입시키는 기능
+		 */
 		if(head instanceof IdNode)
 		{
 			// head가 define된 데이터일 경우 데이터를 풀어쓰기 위한 실행부분
