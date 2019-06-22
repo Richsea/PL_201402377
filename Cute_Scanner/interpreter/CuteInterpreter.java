@@ -70,13 +70,6 @@ public class CuteInterpreter {
 		{
 			return runBinary(list);
 		}
-		if(list.car() instanceof IdNode)
-		{
-			Node definedList = ((IdNode)list.car()).lookupTable();
-			definedList = runExpr(ListNode.cons(definedList, list.cdr()));
-			
-			return definedList;
-		}
 		if(list.car() instanceof ListNode)
 		{
 			if(((ListNode)(list.car())).car() instanceof FunctionNode)
@@ -86,6 +79,12 @@ public class CuteInterpreter {
 					return runExpr(runLambda(((ListNode)(list.car())).cdr(), list.cdr()));
 				}
 			}
+		}
+		if(list.car() instanceof IdNode)
+		{
+			Node definedList = ((IdNode)list.car()).lookupTable();
+			if(definedList != null)
+				return definedList = runExpr(ListNode.cons(definedList, list.cdr()));
 		}
 		return list;
 	}
